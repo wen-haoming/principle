@@ -12,9 +12,9 @@
 4. 所以访问每个属性都能够触发`dep.depend` 进行依赖收集，每个属性上的dep类上都有 activeUpdate (`watcher`) 
 5. 每次属性的修改都能执行dep.notify方法。
 
-- 实现一个Dep
-- 实现一个observer
-- 实现一个autoRun
+- 实现一个 `Dep` 依赖类
+- 实现一个 `reactive` 响应式方法
+- 实现一个 `watchEffect` 收集依赖
 
 ```js
 function isObject(obj){
@@ -39,14 +39,14 @@ class Dep{ // 每个属性都有自己的dep实例
     }
 }
 
-function observer(obj){
+function reactive(obj){
       if(!isObject(obj)){
           throw new TypeError(obj)
       }
     Object.keys(obj).forEach(key=>{
       let val = obj[key]
       let dep = new Dep()
-       if(isObject(val))return observer(val)
+       if(isObject(val))return reactive(val)
        Object.defineProperty(obj,key,{
            get(){
                dep.depend() // 收集依赖
@@ -65,7 +65,7 @@ function observer(obj){
 
 let activeUpdate = null // 把视图更新方法和dep类连接的桥梁
 
-function autoRun(fn){
+function watchEffect(fn){
     function wrapperUpdate(){
         activeUpdate = wrapperUpdate // 提前把更新方法暴露出去
         fn() // 自动执行了依赖属性的get方法

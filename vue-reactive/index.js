@@ -22,14 +22,14 @@ class Dep{
 
 
 
-function observer(obj){
+function reactive(obj){
       if(!isObject(obj)){
           throw new TypeError(obj)
       }
     Object.keys(obj).forEach(key=>{
       let val = obj[key]
       let dep = new Dep()
-       if(isObject(val))return observer(val)
+       if(isObject(val))return reactive(val)
        Object.defineProperty(obj,key,{
            get(){
                dep.depend()
@@ -48,7 +48,7 @@ function observer(obj){
 
 let activeUpdate = null
 
-function autoRun(fn){
+function watchEffect(fn){
     function wrapperUpdate(){
         activeUpdate = wrapperUpdate
         fn()

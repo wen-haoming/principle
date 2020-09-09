@@ -6,9 +6,7 @@
     <title>Document</title>
 </head>
 <body>
-
    <script src="./index.js"></script>
-
    <script>
           let a = {
               a:0,
@@ -16,14 +14,12 @@
                   aaa:0
               }
           }
-
-          observer(a)
-          
-          autoRun(()=>{
+          reactive(a)
+          watchEffect(()=>{
               console.log(a.a,'a.a')
               console.log(a.aa.aaa,'a.aa.aaa')
           })
-          
+
 
    </script>
 
