@@ -16,4 +16,62 @@
 - 实现一个observer
 - 实现一个autoRun
 
+```js
+function isObject(obj){
+    if(typeof obj === 'object' && !Array.isArray(obj) && obj !== null && obj !== undefined ){
+        return true
+    }else{
+         return false
+    }
+}
 
+class Dep{ // 每个属性都有自己的dep实例
+    constructor(){
+       this.subscribers = new Set()
+    }
+    depend(){ // 每次对属性执行get方法都会收集视图更新依赖
+        if(activeUpdate){
+            this.subscribers.add(activeUpdate)
+        }
+    }
+    notify(){ // 属性变化，自动更新视图
+        this.subscribers.forEach(fn=>fn())
+    }
+}
+
+function observer(obj){
+      if(!isObject(obj)){
+          throw new TypeError(obj)
+      }
+    Object.keys(obj).forEach(key=>{
+      let val = obj[key]
+      let dep = new Dep()
+       if(isObject(val))return observer(val)
+       Object.defineProperty(obj,key,{
+           get(){
+               dep.depend() // 收集依赖
+               return val
+           },
+           set(newVal){
+               let isChange = val !== newVal
+               if(isChange){
+                    val = newVal
+                    dep.notify() // 视图更新
+               }
+           }
+       })
+    })
+}
+
+let activeUpdate = null // 把视图更新方法和dep类连接的桥梁
+
+function autoRun(fn){
+    function wrapperUpdate(){
+        activeUpdate = wrapperUpdate // 提前把更新方法暴露出去
+        fn() // 自动执行了依赖属性的get方法
+        wrapperUpdate = null
+    }
+    wrapperUpdate()
+}
+
+```
