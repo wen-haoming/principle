@@ -8,16 +8,20 @@
 <body>
    <script src="./index.js"></script>
    <script>
+
           let a = {
               a:0,
               aa:{
                   aaa:0
               }
           }
+
           reactive(a)
+
           watchEffect(()=>{
               console.log(a.a,'a.a')
-              console.log(a.aa.aaa,'a.aa.aaa')
+              console.log(a.aa.aaa,'a.a')
+              console.log('更新操作')
           })
 
 

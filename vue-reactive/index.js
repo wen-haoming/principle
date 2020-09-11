@@ -28,8 +28,11 @@ function reactive(obj){
       }
     Object.keys(obj).forEach(key=>{
       let val = obj[key]
-      let dep = new Dep()
-       if(isObject(val))return reactive(val)
+       if(isObject(val)){
+           reactive(val)
+           return
+       }
+       let dep = new Dep()
        Object.defineProperty(obj,key,{
            get(){
                dep.depend()
@@ -52,7 +55,7 @@ function watchEffect(fn){
     function wrapperUpdate(){
         activeUpdate = wrapperUpdate
         fn()
-        wrapperUpdate = null
+        activeUpdate = null
     }
     wrapperUpdate()
 }
