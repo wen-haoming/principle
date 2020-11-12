@@ -1,11 +1,16 @@
 <template>
 <div class="wrap">
-    <VirtualList :size="50" :remain="6" :items="items"> </VirtualList>
+    <VirtualList :size="50" :remain="6" :items="items">
+        <template v-slot:default="{item}">
+            <Item :item="item" />
+        </template>
+    </VirtualList>
 </div>
 </template>
 
 <script>
 import VirtualList from "./components/VirtualList";
+import Item from "./components/Item";
 
 // 使用 Mock
 // var items = Mock.mock({
@@ -27,6 +32,7 @@ export default {
     name: "App",
     components: {
         VirtualList,
+        Item
     },
     setup() {
         return {
@@ -40,6 +46,7 @@ export default {
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 .wrap {
