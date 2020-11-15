@@ -1,6 +1,6 @@
 <template>
 <div class="wrap">
-    <VirtualList :size="50" :remain="6" :items="items">
+    <VirtualList :size="50" :remain="6" :variable="true" :items="items">
         <template v-slot:default="{item}">
             <Item :item="item" />
         </template>
@@ -11,20 +11,14 @@
 <script>
 import VirtualList from "./components/VirtualList";
 import Item from "./components/Item";
+import MockJs from 'mockjs'
 
 // 使用 Mock
-// var items = Mock.mock({
-//     // 属性 list 的值是一个数组，其中含有 1 到 10 个元素
-//     'list|1-10': [{
-//         // 属性 id 是一个自增数，起始值为 1，每次增 1
-//         'id|+1': 1
-//     }]
-// })
 let items = [];
 for (let i = 0; i < 1000; i++) {
     items.push({
         id: i,
-        value: i
+        value: MockJs.Random.sentence(5, 50)
     });
 }
 

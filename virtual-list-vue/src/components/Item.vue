@@ -1,5 +1,5 @@
 <template>
-<div class="item">
+<div class="item" style="padding:10px 0; font-size:15px">
     {{item.value}}
 </div>
 </template>
